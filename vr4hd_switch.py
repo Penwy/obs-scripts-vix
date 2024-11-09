@@ -135,11 +135,10 @@ def script_defaults(settings):
     scenes_array = obs.obs_data_get_default_array(settings, "vidswitch_scenes")
     if not scenes_array:
         scenes_array = obs.obs_data_array_create()
-        created = True
+        obs.obs_data_set_default_array(settings, "vidswitch_scenes", scenes_array)
     else:
         for index in range(obs.obs_data_array_count(scenes_array) - 1, -1, -1):
             obs.obs_data_array_erase(scenes_array, index)
-        created = False
 
     for scene in dest_scenes:
         scene_obj = obs.obs_data_create()
@@ -151,10 +150,7 @@ def script_defaults(settings):
         obs.obs_data_array_push_back(scenes_array, scene_obj)
         obs.obs_data_release(scene_obj)
 
-    obs.obs_data_set_default_array(settings, "vidswitch_scenes", scenes_array)
-
-    if created:
-        obs.obs_data_array_release(scenes_array)
+    obs.obs_data_array_release(scenes_array)
 
 
 def script_properties():
